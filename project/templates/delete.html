@@ -1,0 +1,8 @@
+{% extends 'default.html' %}
+{% load custom_filters %}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Сохранить</button> 
+</form>
+{% endblock content %}

@@ -1,0 +1,12 @@
+{% extends 'default.html' %}
+{% load custom_filters %}
+
+{% block title %} New {% endblock title %}
+
+{% block content %}
+<h3>{{ new.title|censor }}</h3>
+<h4> {{ new.text|censor }} </h4>
+{{new.created|date:'d-M-Y h:m'}}
+<br>Рейтинг:{{new.rating}}
+<h1>{{ new }}</h1>
+{% endblock content %}

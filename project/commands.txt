@@ -1,0 +1,34 @@
+python manage.py shell
+from django.contrib.auth import get_user_model
+from blog.models import Author, Category, Post, Comment 
+User = get_user_model()
+first_user = User.objects.create_user(username = 'user_1') 
+second_user = User.objects.create_user(username = 'user_2') 
+Author.objects.create(user=first_user, raiting=0)
+Author.objects.create(user=second_user, raiting=0)
+first_category = Category.objects.create(name='health')
+second_category = Category.objects.create(name='beauty')
+third_category = Category.objects.create(name='tech')
+fourth_category = Category.objects.create(name='pets')
+Post.objects.create(name='Test_first', title='First_news', type='news', text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', author=Author.objects.first())
+Post.objects.create(name='Test_second', title='Second_news', type='news', text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', author=Author.objects.first())
+Post.objects.create(name='Test_third', title='First_article', type='article', text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', author=Author.objects.first())
+Post.objects.create(name='Test_four', title='Second_article', type='article', text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', author=Author.objects.first())
+posts = Post.objects.all()
+for post in posts:
+    post.categories.add(first_category)
+    post.categories.add(second_category)
+for post in posts:
+    Comment.objects.create(user=User.objects.first(), text='Lorem ipsum dolor sit amet', raiting=0, post=post)
+for post in posts:
+    post.like()
+for comment in Comment.objects.all():
+    comment.like()
+user = User.objects.first()
+user.author.update_rating()
+top_author = Author.objects.all().order_by('-raiting').first()
+print(top_author.user.username, top_author.raiting)
+top_post = posts.order_by('-raiting').first()
+print(top_post.created, top_post.author.user.username, top_post.raiting, top_post.title, top_post.preview)
+top_post.post_comments.all()
+# Comment.objects.filter(post=top_post)
